@@ -25,7 +25,7 @@ cmap w!! w !sudo tee > /dev/null %
 
 "---------- view ---------
 "シンタックス
-syntax on
+"syntax on
 "画面上でタブ文字が占める幅
 set tabstop=4
 "連続した空白に対してタブキーやバックスペースキーでカーソルが動く幅
@@ -43,7 +43,7 @@ set cmdheight=2
 "ステータス表示の設定(2常に表示)
 set laststatus=2
 "カーソル行の背景色を変える
-set cursorline
+"set cursorline
 "カーソル位置のカラムの背景色を変える
 "set cursorcolumn
 "カラースキーマ
@@ -206,21 +206,6 @@ if has('mouse')
     endif
 endif
 
-"
-"if &term =~ "xterm"
-"    let &t_SI .= "\e[?2004h"
-"    let &t_EI .= "\e[?2004l"
-"    let &pastetoggle = "\e[201~"
-"
-"    function XTermPasteBegin(ret)
-"        set paste
-"        return a:ret
-"    endfunction
-"
-"    inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
-"endif
-
-
 if has('vim_starting')
     " 初回起動時のみruntimepathにNeoBundleのパスを指定する
     set runtimepath+=~/.vim/bundle/neobundle.vim/
@@ -288,7 +273,6 @@ if neobundle#is_installed('molokai') " molokaiがインストールされてい�
 endif
 
 set t_Co=256 " iTerm2など既に256色環境なら無くても良い
-syntax enable " 構文に色を付ける
 
 
 "----------------------------------------------------------
@@ -427,7 +411,7 @@ Plug 'vim-scripts/c.vim'
 Plug 'jelera/vim-javascript-syntax'
 
 "" HTML Bundle
-Plug 'amirh/HTML-AutoCloseTag'
+"Plug 'amirh/HTML-AutoCloseTag'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'gorodinskiy/vim-coloresque'
 Plug 'tpope/vim-haml'
@@ -494,7 +478,6 @@ let g:session_command_aliases = 1
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
-syntax on
 set ruler
 set number
 
@@ -625,10 +608,10 @@ endif
 "" Autocmd Rules
 "*****************************************************************************
 "" The PC is fast enough, do syntax highlight syncing from start
-augroup vimrc-sync-fromstart
-  autocmd!
-  autocmd BufEnter * :syntax sync fromstart
-augroup END
+"augroup vimrc-sync-fromstart
+"  autocmd!
+"  autocmd BufEnter * :syntax sync fromstart
+"augroup END
 
 "" Remember cursor position
 augroup vimrc-remember-cursor-position
@@ -770,9 +753,9 @@ noremap <C-h> <C-w>h
 vmap < <gv
 vmap > >gv
 
-"" Move visual block
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
+""" Move visual block
+"vnoremap J :m '>+1<CR>gv=gv
+"vnoremap K :m '<-2<CR>gv=gv
 
 "" Open current line on GitHub
 nnoremap <Leader>o :.Gbrowse<CR>
@@ -863,3 +846,5 @@ else
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
 endif
+
+nnoremap <F3> :<C-u>tab stj <C-R>=expand('<cword>')<CR><CR>
