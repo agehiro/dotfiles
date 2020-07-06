@@ -47,9 +47,16 @@ set laststatus=2
 "カーソル位置のカラムの背景色を変える
 "set cursorcolumn
 "カラースキーマ
-colorscheme peachpuff
+"colorscheme peachpuff
+colorscheme molokai
+
+highlight Normal ctermbg=NONE guibg=NONE
+highlight NonText ctermbg=NONE guibg=NONE
+highlight SpecialKey ctermbg=NONE guibg=NONE
+highlight EndOfBuffer ctermbg=NONE guibg=NONE
+
 "背景色の指定
-set background=light
+"set background=light
 "ファイル選択時の候補の表示
 set wildmenu
 "set wildmode=list:full
@@ -744,10 +751,13 @@ noremap <leader>c :bd<CR>
 nnoremap <silent> <leader><space> :noh<cr>
 
 "" Switching windows
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
-noremap <C-h> <C-w>h
+"" noremap <C-j> <C-w>j
+"" noremap <C-k> <C-w>k
+"" noremap <C-l> <C-w>l
+"" noremap <C-h> <C-w>h
+
+noremap <C-j> <esc>
+noremap! <C-j> <esc>
 
 "" Vmap for maintain Visual Mode after shifting > and <
 vmap < <gv
@@ -765,7 +775,7 @@ nnoremap <Leader>o :.Gbrowse<CR>
 " vim-python
 augroup vimrc-python
   autocmd!
-  autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79
+  autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
       \ formatoptions+=croq softtabstop=4 smartindent
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
@@ -848,3 +858,5 @@ else
 endif
 
 nnoremap <F3> :<C-u>tab stj <C-R>=expand('<cword>')<CR><CR>
+
+set shortmess-=S
