@@ -25,7 +25,7 @@ cmap w!! w !sudo tee > /dev/null %
 
 "---------- view ---------
 "シンタックス
-"syntax on
+syntax on
 "画面上でタブ文字が占める幅
 set tabstop=4
 "連続した空白に対してタブキーやバックスペースキーでカーソルが動く幅
@@ -43,12 +43,14 @@ set cmdheight=2
 "ステータス表示の設定(2常に表示)
 set laststatus=2
 "カーソル行の背景色を変える
-"set cursorline
+set cursorline
 "カーソル位置のカラムの背景色を変える
-"set cursorcolumn
-"カラースキーマ
-"colorscheme peachpuff
-colorscheme molokai
+set cursorcolumn
+"行頭行末の左右移動で上下の行に移動
+set whichwrap=b,s,h,l,<,>,~,[,]
+"行末の1文字右までカーソルを移動をできるようにする
+set virtualedit=onemore
+
 
 highlight Normal ctermbg=NONE guibg=NONE
 highlight NonText ctermbg=NONE guibg=NONE
@@ -90,7 +92,15 @@ nnoremap + <C-a>
 "-で数字をデクリメント
 nnoremap - <C-x>
 
-
+"外部でファイルに変更があったときに自動再読み込み
+set autoread
+"保存されていないときは終了前に確認(保存を確認するYes,No,Cancel選択の表示)
+set confirm
+ "常に補完ウィンドウを表示,補完ウィンドウを表示時に挿入しない
+set completeopt=menuone,noinsert
+" ファイルタイプ別のVimプラグイン/インデントを有効にする
+filetype on
+filetype plugin indent on
 
 "---------- search ---------
 "検索時の大文字小文字無視
@@ -110,96 +120,6 @@ set wrapscan
 "Vimの「%」を拡張する
 source $VIMRUNTIME/macros/matchit.vim
 
-""pluginを使用可能にする
-"augroup fileTypeIndent
-"    autocmd!
-"    autocmd BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4
-"augroup END
-"
-"
-"" dein settings {{{
-"if &compatible
-"    set nocompatible
-"endif
-"
-"" reset augroup
-"augroup MyAutoCmd
-"  autocmd!
-"augroup END
-"
-"let s:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
-"let s:dein_dir = s:cache_home . '/dein'
-"let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-"
-"if !isdirectory(s:dein_repo_dir)
-"    call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
-"endif
-"execute 'set runtimepath^=' . s:dein_repo_dir
-"
-"let g:dein#install_max_processes = 16
-"let g:dein#install_progress_type = 'title'
-"let g:dein#enable_notification = 1
-"let s:toml      = '~/.config/dein/plugins.toml'
-"let s:lazy_toml = '~/.config/dein/plugins_lazy.toml'
-"
-"if dein#load_state(s:dein_dir)
-"    call dein#begin(s:dein_dir, [s:toml, s:lazy_toml])
-"    call dein#load_toml(s:toml, {'lazy': 0})
-"    call dein#load_toml(s:lazy_toml, {'lazy': 1})
-"    call dein#end()
-"    call dein#save_state()
-"endif
-"
-"if has('vim_starting') && dein#check_install()
-"    call dein#install()
-"endif
-"" }}}
-"
-"
-"
-""if &compatible
-""  set nocompatible
-""endif
-""set runtimepath^=~/.vim/repos/github.com/Shougo/dein.vim
-""
-""call dein#begin('~/.vim/plugin')
-""
-"""call dein#add({path to dein.vim directory})
-"""call dein#add('Shougo/neocomplete.vim')
-""
-""call dein#end()
-""
-""
-""
-""let g:python3_host_prog = expand('$HOME') . '/.pyenv/shims/python'
-""
-""if has('nvim')
-""    NeoBundleLazy 'Shougo/deoplete.nvim', {
-""                \ "autoload": {"insert": 1}}
-""else
-""    NeoBundleLazy 'Shougo/neocomplete.vim', { "autoload": {"insert": 1}}
-""endif
-""
-""if has('nvim')
-""    let s:hooks = neobundle#get_hooks("deoplete.nvim")
-""    function! s:hooks.on_source(bundle)
-""        let g:deoplete#enable_at_startup = 1
-""    endfunction
-""else
-""    let s:hooks = neobundle#get_hooks("neocomplete.vim")
-""    function! s:hooks.on_source(bundle)
-""        let g:neocomplete#enable_smart_case = 1
-""        let g:neocomplete#enable_at_startup = 1
-""    endfunction
-""endif
-"
-"
-"filetype plugin indent on
-""
-""ctermbg:背景色
-""
-"hi Search term=bold ctermbg=none guibg=Gold2
-
 "マウスの有効化
 "マウスでカーソル移動やスクロール移動が可能に
 if has('mouse')
@@ -213,108 +133,19 @@ if has('mouse')
     endif
 endif
 
-if has('vim_starting')
-    " 初回起動時のみruntimepathにNeoBundleのパスを指定する
-    set runtimepath+=~/.vim/bundle/neobundle.vim/
-
-    " NeoBundleが未インストールであればgit cloneする・・・・・・①
-    if !isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
-        echo "install NeoBundle..."
-        :call system("git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim")
-    endif
-endif
-
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-" インストールするVimプラグインを以下に記述
-" NeoBundle自身を管理
-NeoBundleFetch 'Shougo/neobundle.vim'
-"----------------------------------------------------------
-" ここに追加したいVimプラグインを記述する・・・・・・②
 "
-" カラースキームmolokai
-NeoBundle 'tomasr/molokai'
-" " ステータスラインの表示内容強化
-NeoBundle 'itchyny/lightline.vim'
-" カラースキームmolokai
-NeoBundle 'tomasr/molokai'
-" ステータスラインの表示内容強化
-NeoBundle 'itchyny/lightline.vim'
-" 末尾の全角と半角の空白文字を赤くハイライト
-NeoBundle 'bronson/vim-trailing-whitespace'
-" インデントの可視化
-NeoBundle 'Yggdroot/indentLine'
-
-if has('lua') " lua機能が有効になっている場合・・・・・・①
-    " コードの自動補完
-    NeoBundle 'Shougo/neocomplete.vim'
-    " スニペットの補完機能
-    NeoBundle "Shougo/neosnippet"
-    " スニペット集
-    NeoBundle 'Shougo/neosnippet-snippets'
-endif
-
-
-" 多機能セレクタ
-NeoBundle 'ctrlpvim/ctrlp.vim'
-" CtrlPの拡張プラグイン. 関数検索
-NeoBundle 'tacahiroy/ctrlp-funky'
-" CtrlPの拡張プラグイン. コマンド履歴検索
-NeoBundle 'suy/vim-ctrlp-commandline'
-
-"----------------------------------------------------------
-call neobundle#end()
-
-" ファイルタイプ別のVimプラグイン/インデントを有効にする
-filetype plugin indent on
-
-" 未インストールのVimプラグインがある場合、インストールするかどうかを尋ねてくれるようにする設定・・・・・・③
-NeoBundleCheck
-
 
 "----------------------------------------------------------
 " molokaiの設定
 "----------------------------------------------------------
-if neobundle#is_installed('molokai') " molokaiがインストールされていれば
-    colorscheme molokai " カラースキームにmolokaiを設定する
-endif
-
 set t_Co=256 " iTerm2など既に256色環境なら無くても良い
 
 
 "----------------------------------------------------------
 "" lightline.vimの設定
 "----------------------------------------------------------
-set laststatus=2 " ステータスラインを常に表示
 set showmode " 現在のモードを表示
-set showcmd " 打ったコマンドをステータスラインの下に表示
-set ruler " ステータスラインの右側にカーソルの位置を表示する
 
-
-
-
-"----------------------------------------------------------
-" neocomplete・neosnippetの設定
-"----------------------------------------------------------
-if neobundle#is_installed('neocomplete.vim')
-    " Vim起動時にneocompleteを有効にする
-    let g:neocomplete#enable_at_startup = 1
-    " smartcase有効化. 大文字が入力されるまで大文字小文字の区別を無視する
-    let g:neocomplete#enable_smart_case = 1
-    " 3文字以上の単語に対して補完を有効にする
-    let g:neocomplete#min_keyword_length = 3
-    " 区切り文字まで補完する
-    let g:neocomplete#enable_auto_delimiter = 1
-    " 1文字目の入力から補完のポップアップを表示
-    let g:neocomplete#auto_completion_start_length = 1
-    " バックスペースで補完のポップアップを閉じる
-    inoremap <expr><BS> neocomplete#smart_close_popup()."<C-h>"
-
-    " エンターキーで補完候補の確定. スニペットの展開もエンターキーで確定・・・・・・②
-    imap <expr><CR> neosnippet#expandable() ? "<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "<C-y>" : "<CR>"
-    " タブキーで補完候補の選択. スニペット内のジャンプもタブキーでジャンプ・・・・・・③
-    imap <expr><TAB> pumvisible() ? "<C-n>" : neosnippet#jumpable() ? "<Plug>(neosnippet_expand_or_jump)" : "<TAB>"
-endif
 
 
 
@@ -434,47 +265,20 @@ endif
 
 call plug#end()
 
-" Required:
-filetype plugin indent on
 
 
 "*****************************************************************************
 "" Basic Setup
 "*****************************************************************************"
-"" Encoding
-set encoding=utf-8
-set fileencoding=utf-8
-set fileencodings=utf-8
-
-"" Fix backspace indent
-set backspace=indent,eol,start
-
-"" Map leader to ,
 let mapleader=','
 
 "" Enable hidden buffers
 set hidden
-
-"" Searching
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-
-"" Encoding
-"set bomb
-"set binary
-"set expandtab
-
 set ttyfast
 
 "" Directories for swp files
 set nobackup
 set noswapfile
-
-set fileformats=unix,dos,mac
-set showcmd
-set shell=/bin/sh
 
 " session management
 let g:session_directory = "~/.vim/session"
@@ -485,8 +289,6 @@ let g:session_command_aliases = 1
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
-set ruler
-set number
 
 let no_buffers_menu=1
 if !exists('g:not_finish_vimplug')
@@ -494,7 +296,6 @@ if !exists('g:not_finish_vimplug')
 endif
 
 set mousemodel=popup
-set t_Co=256
 set guioptions=egmrti
 set gfn=Monospace\ 10
 
@@ -508,7 +309,6 @@ else
 
   " IndentLine
   let g:indentLine_enabled = 1
-  let g:indentLine_concealcursor = 0
   let g:indentLine_char = '|'
   let g:indentLine_faster = 1
 
@@ -530,9 +330,6 @@ endif
 "" Disable the blinking cursor.
 set gcr=a:blinkon0
 set scrolloff=3
-
-"" Status bar
-set laststatus=2
 
 "" Use modeline overrides
 set modeline
@@ -639,7 +436,6 @@ augroup vimrc-make-cmake
   autocmd BufNewFile,BufRead CMakeLists.txt setlocal filetype=cmake
 augroup END
 
-set autoread
 
 "*****************************************************************************
 "" Mappings

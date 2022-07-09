@@ -168,3 +168,5 @@ esac
 
 export PATH=$PATH:/usr/local/bin
 export PATH="/usr/local/opt/ruby/bin:$PATH"
+
+export DOCKER_CONTENT_TRUST=1
